@@ -1,0 +1,13 @@
+{
+  "type": "module",
+  
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "scripts": {
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
+  },
+  "dependencies": {
+    "cross-env": "^7.0.3"
+  }
+}
