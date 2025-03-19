@@ -1,6 +1,7 @@
 export default function feedback(guess) {
   const correctWord = "cykla";
 
+  // If there is no guess, correctWord (cykla) will be returned.
   if (!guess) {
     return correctWord;
   }
@@ -11,6 +12,7 @@ export default function feedback(guess) {
 
   const correctLetterCounts = {};
 
+  // Loop to mark the correct letters.
   for (let i = 0; i < guessedLetters.length; i++) {
     if (guessedLetters[i] === correctWordLetters[i]) {
       result[i] = { letter: guessedLetters[i], status: "correct" };
@@ -19,6 +21,7 @@ export default function feedback(guess) {
     }
   }
 
+  // Another loop to mark the misplaced or incorrect letters. 
   for (let i = 0; i < guessedLetters.length; i++) {
     if (!result[i]) {
       const letter = guessedLetters[i];
