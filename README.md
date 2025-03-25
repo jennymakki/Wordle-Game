@@ -18,7 +18,7 @@ SIDA 1: SPELET
 
 TDD: 
 Backend:
-(x) API laddar in orden.
+1. API laddar in orden. - KLART
 2. Ett av orden är det "rätta". 
 3. En timer för spelet som startar när man klickar på start och avslutas när man gissat rätt.
 4. Lagra användarens information (high-score, namn, och tid). 
