@@ -1,9 +1,9 @@
 TODO: 
 
 GENERELLT:
-() SERVA SITEN MED HJÄLP AV NODE 5080 med hjälp av Express.
+(x) SERVA SITEN MED HJÄLP AV NODE 5080 med hjälp av Express.
 () Alla dependencies installeras när man kör “npm install” (måste finnas i package.json).
-() Servern går att starta med “npm start”.
+(x) Servern går att starta med “npm start”.
 () Test ska gå att köra med “npm test”.
 
 SIDA 1: SPELET
@@ -12,13 +12,13 @@ SIDA 1: SPELET
 () Användaren gissar vad ordet är genom att skriva in det i ett fritextfält
 () Spelet ger feedback enligt feedback-algoritmen, genom att visa användarens bokstäver i grönt (correct), gult (misplaced) eller rött (incorrect)
 () När användaren gissar rätt ord är spelet över
-() Det slumpmässiga urvalet av ord ska ske på servern via ett API-anrop. En datakälla kan vara den datafil som finns på https://github.com/dwyl/english-words
+(x) Det slumpmässiga urvalet av ord ska ske på servern via ett API-anrop. En datakälla kan vara den datafil som finns på https://github.com/dwyl/english-words
 () Efter att användaren klarat spelet ska hen få möjlighet att ange sitt namn och skicka in resultatet till en highscore-lista. Den data som skickas in ska inkludera namnet, tiden från att spelet startade till att det slutade, gissningarna, samt inställningarna avseende ordets längd och unika bokstäver.
 ((VG)) Spelet och API ska implementeras på ett sådant sätt att det inte är möjligt att fuska, genom att backend ansvarar för feedback och tidtagning från att ordet väljs ut, till att spelet är över
 
 TDD: 
 Backend:
-1. API laddar in orden. 
+(x) API laddar in orden.
 2. Ett av orden är det "rätta". 
 3. En timer för spelet som startar när man klickar på start och avslutas när man gissat rätt.
 4. Lagra användarens information (high-score, namn, och tid). 
@@ -29,7 +29,6 @@ Frontend:
 2. Gå att gissa på ord genom att skriva.
 3. Indikator på vilka bokstäver som är rätt/fel/felplacerade.
 4. Fylla i sin information när spelet är över. 
-5. 
 
 SIDA 2: OM PROJEKTET (STATISK)
 () STATISK HTML-SIDA OM PROJEKTET
