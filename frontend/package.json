@@ -38,6 +38,7 @@
   },
   "proxy": "http://localhost:5080",
   "devDependencies": {
+    "@babel/preset-react": "^7.26.3",
     "concurrently": "^9.1.2"
   }
 }
