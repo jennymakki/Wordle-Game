@@ -2,6 +2,7 @@ import { useState , useEffect } from "react";
 import StartScreen from "./components/StartScreen";
 import Grid from "./components/Grid";
 import Keyboard from "./components/Keyboard";
+import Header from "./components/Header";
 import './styles/App.css'
 
 function App() {
@@ -11,10 +12,14 @@ function App() {
   const [guesses, setGuesses] = useState([]);
   const [currentGuess, setCurrentGuess] = useState(""); // To track the current guess being typed
   const [letterStatuses, setLetterStatuses] = useState({}); // Track the status of each letter
+  const [gameOver, setGameOver] = useState("false");
+  const [winMessage, setWinMessage] = useState("");
+
 
   const startGame = (name, length) => {
     setPlayerName(name);
     setWordLength(length);
+    setGameOver (false);
 
     // Fetch a word of the chosen length
     fetch(`http://localhost:5080/random-word?length=${length}`)
@@ -23,46 +28,73 @@ function App() {
       .catch((error) => console.error("Error fetching word:", error));
   };
 
-  const handleGuess = (guess) => {
-    setGuesses([...guesses, guess]);
-
-    // Update letter statuses
-    const newStatuses = { ...letterStatuses };
-    guess.split("").forEach((letter, index) => {
-      if (randomWord[index] === letter) {
-        newStatuses[letter] = "green"; // Correct letter
-      } else if (randomWord.includes(letter)) {
-        newStatuses[letter] = "yellow"; // Wrong position but present in the word
-      } else {
-        newStatuses[letter] = "gray"; // Not in the word
-      }
-    });
-
-    setLetterStatuses(newStatuses);
-    setCurrentGuess(""); // Clear the current guess after submitting
+  const handleGuessChange = (e) => {
+    setCurrentGuess(e.target.value.toUpperCase());
   };
 
-  // Handle keyboard input (typing letters, backspace, and enter)
-  const handleKeydown = (event) => {
-    if (event.key === "Backspace") {
-      setCurrentGuess(currentGuess.slice(0, -1)); // Remove last letter on Backspace
-    } else if (event.key === "Enter") {
-      if (currentGuess.length === wordLength) {
-        handleGuess(currentGuess); // Submit guess if the word length is correct
+  const checkGuess = (guess) => {
+    const result = [];
+    const correctWordLetters = randomWord.split("");
+    const guessedLetters = guess.split("");
+
+    const correctLetterCounts = {};
+
+    for (let i = 0; i < guessedLetters.length; i++) {
+      if (guessedLetters[i] === correctWordLetters[i]) {
+        result [i] = { letter: guessedLetters [i], status: "correct"};
+        correctLetterCounts[guessedLetters[i]] =
+        (correctLetterCounts[guessedLetters[i]] || 0) +1;
       }
-    } else if (/^[a-zA-Z]$/.test(event.key) && currentGuess.length < wordLength) {
-      setCurrentGuess(currentGuess + event.key.toUpperCase()); // Add the letter to current guess
     }
+
+    for (let i=0; i < guessedLetters.length; i++) {
+      if (!result[i]) {
+        const letter = guessedLetters [i];
+        const occurencesInCorrectWord = randomWord.split(letter).length -1;
+        const occurencesMarked = correctLetterCounts[letter] || 0;
+
+        if (
+          randomWord.includes(letter) &&
+          occurencesMarked < occurencesInCorrectWord
+        ) {
+          result [i] = {letter, status: "misplaced" };
+          correctLetterCounts[letter] = occurencesMarked +1;
+        } else {
+          result[i] = {letter, status: "incorrect" };
+        }
+      }
+    }
+    return result;
   };
 
-  // Use effect to add keydown event listener on mount and clean it up on unmount
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeydown);
+  const handleSubmitGuess = (e) => {
+    e.preventDefault();
 
-    return () => {
-      window.removeEventListener("keydown", handleKeydown);
-    };
-  }, [currentGuess]);
+    const guessLower = currentGuess.toLowerCase();
+
+    if (guessLower.length !== wordLength) {
+      alert(`Guess must be ${wordLength} letters long`);
+      return;
+    }
+
+    setGuesses ([...guesses, guessLower]);
+
+    const updatedStatuses = checkGuess(guessLower);
+    const updatedLetterStatuses = { ...letterStatuses};
+
+    updatedStatuses.forEach(( { letter, status }) => {
+      updatedLetterStatuses[letter] = status;
+    });
+    
+    setLetterStatuses(updatedLetterStatuses);
+
+    if (guessLower === randomWord) {
+      setGameOver(true);
+      setWinMessage("Congratulations, you won!");
+    }
+
+    setCurrentGuess("");
+  };
 
   if (!playerName) {
     return <StartScreen onStart={startGame} />;
@@ -70,12 +102,26 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Wordle</h1>
-      <h2>Player: {playerName}</h2>
-      <h3>Word Length: {wordLength}</h3>
+      <Header></Header>
+      <h2>Good Luck, {playerName}!</h2>
       <h1>Random Word: {randomWord || "Loading..."}</h1>
       <Grid guesses={guesses} currentGuess={currentGuess} wordLength={wordLength} />
       <Keyboard letterStatuses={letterStatuses} />
+
+      {!gameOver && (
+        <form onSubmit={handleSubmitGuess}>
+          <input
+          type="text"
+          value={currentGuess}
+          onChange={handleGuessChange}
+          maxLength={wordLength}
+          placeholder={`Enter a ${wordLength}-letter word`}
+          />
+          <button type="submit">Submit Guess</button>
+        </form>
+      )}
+
+      {gameOver && <h2>{winMessage}</h2>}
     </div>
   );
 }

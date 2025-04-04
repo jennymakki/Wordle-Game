@@ -1,0 +1,65 @@
+#root {
+    background: linear-gradient(to right, #dcdcdc, #b0b0b0);
+}
+
+.start-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100vh; /* Take full viewport height */
+
+    padding: 20px;
+    color: #333; /* Text color */
+  }
+  
+  /* Header */
+  .start-screen h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  /* Input Field Styling */
+  input[type="text"] {
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 18px;
+    border-radius: 5px;
+    border: 2px solid #b0b0b0;
+    width: 200px;
+    text-align: center;
+  }
+  
+  /* Select Styling */
+  select {
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 5px;
+    border: 2px solid #b0b0b0;
+    background-color: #fff;
+    margin: 10px 0;
+    width: 220px;
+  }
+  
+  /* Button Styling */
+  button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #538d4e; /* Wordle green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  button:hover {
+    background-color: #4a7e45;
+  }
+  
+  /* Optional: Add padding to the content */
+  .start-screen > * {
+    margin: 10px 0;
+  }
