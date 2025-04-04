@@ -8,20 +8,17 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    height: 100vh; /* Take full viewport height */
-
+    height: 100vh;
     padding: 20px;
-    color: #333; /* Text color */
+    color: #333;
   }
   
-  /* Header */
   .start-screen h2 {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 10px;
   }
   
-  /* Input Field Styling */
   input[type="text"] {
     padding: 10px;
     margin: 10px 0;
@@ -32,7 +29,6 @@
     text-align: center;
   }
   
-  /* Select Styling */
   select {
     padding: 10px;
     font-size: 18px;
@@ -43,11 +39,11 @@
     width: 220px;
   }
   
-  /* Button Styling */
+
   button {
     padding: 10px 20px;
     font-size: 18px;
-    background-color: #538d4e; /* Wordle green */
+    background-color: #538d4e;
     color: white;
     border: none;
     border-radius: 5px;
@@ -58,8 +54,7 @@
   button:hover {
     background-color: #4a7e45;
   }
-  
-  /* Optional: Add padding to the content */
+
   .start-screen > * {
     margin: 10px 0;
   }

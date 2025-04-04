@@ -10,8 +10,8 @@ function App() {
   const [wordLength, setWordLength] = useState(null);
   const [randomWord, setRandomWord] = useState("");
   const [guesses, setGuesses] = useState([]);
-  const [currentGuess, setCurrentGuess] = useState(""); // To track the current guess being typed
-  const [letterStatuses, setLetterStatuses] = useState({}); // Track the status of each letter
+  const [currentGuess, setCurrentGuess] = useState(""); 
+  const [letterStatuses, setLetterStatuses] = useState({});
   const [gameOver, setGameOver] = useState("false");
   const [winMessage, setWinMessage] = useState("");
 
@@ -21,7 +21,6 @@ function App() {
     setWordLength(length);
     setGameOver (false);
 
-    // Fetch a word of the chosen length
     fetch(`http://localhost:5080/random-word?length=${length}`)
       .then((response) => response.json())
       .then((data) => setRandomWord(data.word))
@@ -77,24 +76,24 @@ function App() {
       return;
     }
 
-    setGuesses ([...guesses, guessLower]);
+    setGuesses([...guesses, guessLower]);
 
     const updatedStatuses = checkGuess(guessLower);
-    const updatedLetterStatuses = { ...letterStatuses};
+    const updatedLetterStatuses = { ...letterStatuses };
 
-    updatedStatuses.forEach(( { letter, status }) => {
+    updatedStatuses.forEach(({ letter, status }) => {
       updatedLetterStatuses[letter] = status;
     });
-    
+
     setLetterStatuses(updatedLetterStatuses);
 
     if (guessLower === randomWord) {
       setGameOver(true);
-      setWinMessage("Congratulations, you won!");
+      setWinMessage("🎉 Congratulations, you won!");
     }
 
     setCurrentGuess("");
-  };
+};
 
   if (!playerName) {
     return <StartScreen onStart={startGame} />;
@@ -104,12 +103,9 @@ function App() {
     <div className="App">
       <Header></Header>
       <h2>Good Luck, {playerName}!</h2>
-      <h1>Random Word: {randomWord || "Loading..."}</h1>
-      <Grid guesses={guesses} currentGuess={currentGuess} wordLength={wordLength} />
-      <Keyboard letterStatuses={letterStatuses} />
-
+      {gameOver && <h2>{winMessage}</h2>}
       {!gameOver && (
-        <form onSubmit={handleSubmitGuess}>
+        <form className="guess-form" onSubmit={handleSubmitGuess}>
           <input
           type="text"
           value={currentGuess}
@@ -120,8 +116,9 @@ function App() {
           <button type="submit">Submit Guess</button>
         </form>
       )}
-
-      {gameOver && <h2>{winMessage}</h2>}
+      <Grid guesses={guesses} wordLength={wordLength} randomWord={randomWord} />
+      <Keyboard letterStatuses={letterStatuses} />
+      { <h1>Random Word: {randomWord || "Loading..."}</h1> }
     </div>
   );
 }

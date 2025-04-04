@@ -21,18 +21,18 @@
     font-size: 24px;
     font-weight: bold;
   }
-  
-  .grid-cell.green {
-    background-color: #4caf50; /* Green for correct letter */
+
+  .correct {
+    background-color: #6aaa64; 
     color: white;
   }
   
-  .grid-cell.yellow {
-    background-color: #ffeb3b; /* Yellow for wrong position */
-    color: black;
+  .misplaced {
+    background-color: #c9b458;
+    color: white;
   }
   
-  .grid-cell.gray {
-    background-color: #9e9e9e; /* Gray for letters not in the word */
+  .incorrect {
+    background-color: #787c7e;
     color: white;
   }
