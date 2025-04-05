@@ -1,10 +1,12 @@
-function Header() {
+function Header( {onNavigateHome}) {
     return  (
-    <div class="header">
-    <h1 class ="header__item">Wordle Game</h1>
-    <h1 class ="header__item">High Scores</h1>
-    <h1 class ="header__item">About</h1>
-    </div>
+        <nav className="header">
+        <h1 className="header__item" onClick={onNavigateHome}>
+          Wordle Game
+        </h1>
+        <h1 className="header__item">High Scores</h1>
+        <h1 className="header__item">About</h1>
+      </nav>
     );
 }
 

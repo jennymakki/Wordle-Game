@@ -1,8 +1,9 @@
-import { useState , useEffect } from "react";
+import { useState } from "react";
 import StartScreen from "./components/StartScreen";
 import Grid from "./components/Grid";
 import Keyboard from "./components/Keyboard";
 import Header from "./components/Header";
+import { submitScore } from "./api/gameService";
 import './styles/App.css'
 
 function App() {
@@ -14,12 +15,14 @@ function App() {
   const [letterStatuses, setLetterStatuses] = useState({});
   const [gameOver, setGameOver] = useState("false");
   const [winMessage, setWinMessage] = useState("");
+  const [gameLost, setGameLost] = useState(false);
 
 
   const startGame = (name, length) => {
     setPlayerName(name);
     setWordLength(length);
     setGameOver (false);
+    setGameLost(false);
 
     fetch(`http://localhost:5080/random-word?length=${length}`)
       .then((response) => response.json())
@@ -68,42 +71,78 @@ function App() {
 
   const handleSubmitGuess = (e) => {
     e.preventDefault();
-
+  
     const guessLower = currentGuess.toLowerCase();
-
+  
     if (guessLower.length !== wordLength) {
       alert(`Guess must be ${wordLength} letters long`);
       return;
     }
-
+  
     setGuesses([...guesses, guessLower]);
-
+  
     const updatedStatuses = checkGuess(guessLower);
     const updatedLetterStatuses = { ...letterStatuses };
-
+  
     updatedStatuses.forEach(({ letter, status }) => {
       updatedLetterStatuses[letter] = status;
     });
-
+  
     setLetterStatuses(updatedLetterStatuses);
+  
 
     if (guessLower === randomWord) {
       setGameOver(true);
-      setWinMessage("🎉 Congratulations, you won!");
-    }
+      setWinMessage("Congratulations, you won!");
 
+      submitScore(playerName, guesses.length + 1); 
+    }
+  
+
+    if (guesses.length === 5) {
+      setGameLost(true);
+      setGameOver(true);
+
+      submitScore(playerName, guesses.length + 1);
+    }
+  
     setCurrentGuess("");
-};
+  };
 
   if (!playerName) {
     return <StartScreen onStart={startGame} />;
   }
 
+  const handleNavigateHome = () => {
+    setPlayerName(null);
+    setWordLength(null);
+    setRandomWord("");
+    setGuesses([]);
+    setCurrentGuess("");
+    setLetterStatuses({});
+    setGameOver(false);
+    setWinMessage("");
+    setGameLost(false);
+  };
+
+  const restartGame = () => {
+    setGameLost(false);
+    setGuesses([]);
+    setCurrentGuess("");
+    setLetterStatuses({});
+    setGameOver(false);
+    setWinMessage("");
+  };
+
   return (
     <div className="App">
-      <Header></Header>
+      <Header onNavigateHome={handleNavigateHome} />
       <h2>Good Luck, {playerName}!</h2>
-      {gameOver && <h2>{winMessage}</h2>}
+      {gameOver && (
+        <div>
+          <h2>{winMessage || "You lost, better luck next time!"}</h2>
+        </div>
+      )}
       {!gameOver && (
         <form className="guess-form" onSubmit={handleSubmitGuess}>
           <input

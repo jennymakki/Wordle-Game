@@ -1,16 +1,34 @@
+import mongoose from "mongoose";
 import express from "express";
 import axios from "axios";
 import cors from "cors";
+import dotenv from "dotenv";
+import gameRoutes from './routes/gameRoutes.js'
+
+dotenv.config()
+
+console.log(process.env.MONGO_URI);
 
 const app = express();
 const PORT = 5080;
 
-// Enable CORS to allow frontend (port 3000) to communicate with backend
+app.use(express.json());
+
 app.use(cors());
+
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => {
+    console.log("Connected to MongoDB!");
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB:", error);
+  });
 
 let wordsList = [];
 
-// Load words from GitHub
 axios.get("https://raw.githubusercontent.com/dwyl/english-words/master/words_dictionary.json")
   .then(response => {
     wordsList = Object.keys(response.data);
@@ -51,6 +69,8 @@ app.get("/random-word", (req, res) => {
   console.log("Random word selected:", randomWord);
   res.json({ word: randomWord });
 });
+
+app.use('/api/game', gameRoutes);
 
 // Start the server
 app.listen(PORT, () => {

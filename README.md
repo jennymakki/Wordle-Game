@@ -10,6 +10,7 @@ SIDA 1: SPELET
 () Spelet ska utvecklas fullstack, med GUI utvecklat i React, och delar av spellogiken på backend via ett API.
 () Spelet väljer ut ett slumpmässigt ord varje gång spelet startar – användaren kan bestämma hur många bokstäver ordet ska ha och om det får innehålla bokstäver som upprepas
 () Måste dubbelkolla att orden faktiskt är riktiga ord eller om det blir något tokigt när orden hämtas. 
+() GAME OVER om antalet gissningar tar slut
 (x) Användaren gissar vad ordet är genom att skriva in det i ett fritextfält
 (x) Spelet ger feedback enligt feedback-algoritmen, genom att visa användarens bokstäver i grönt (correct), gult (misplaced) eller rött (incorrect)
 (x) När användaren gissar rätt ord är spelet över
