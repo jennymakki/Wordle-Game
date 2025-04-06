@@ -6,6 +6,21 @@ import Header from "./components/Header";
 import { submitScore } from "./api/gameService";
 import './styles/App.css'
 
+const saveWinner = async (name) => {
+  try {
+    await fetch("http://localhost:5080/save-winner", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name }),
+    });
+    console.log("Winner saved!");
+  } catch (err) {
+    console.error("Failed to save winner:", err);
+  }
+};
+
 function App() {
   const [playerName, setPlayerName] = useState(null);
   const [wordLength, setWordLength] = useState(null);
@@ -95,7 +110,7 @@ function App() {
       setGameOver(true);
       setWinMessage("Congratulations, you won!");
 
-      submitScore(playerName, guesses.length + 1); 
+      saveWinner(playerName);
     }
   
 
