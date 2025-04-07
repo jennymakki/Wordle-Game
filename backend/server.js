@@ -148,7 +148,7 @@ app.get("/high-scores", async (req, res) => {
             /* Center the content */
             body {
               font-family: Arial, sans-serif;
-              background-color: #f5f5f5;
+              background: linear-gradient(to right, #dcdcdc, #b0b0b0);
               display: flex;
               justify-content: center;
               align-items: center;
@@ -161,10 +161,11 @@ app.get("/high-scores", async (req, res) => {
               background-color: #ffffff;
               border-radius: 15px;
               box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-              padding: 2rem;
+              padding: 4rem;
               max-width: 600px;
               width: 100%;
               text-align: center;
+              margin-top: 3rem;
             }
 
             /* Header styles */
@@ -210,18 +211,65 @@ app.get("/high-scores", async (req, res) => {
 
             a:hover {
               background-color: #5c9b58;
+  }
+
+
+              .header__div {
+  width: 100%;
+  background-color: #6aaa64; /* match Wordle's green or whatever you use */
+  padding: 1rem 0;
+  position: fixed; /* stick to top */
+  top: 0;
+  left: 0;
+  z-index: 1000; /* stay above other content */
+}
+
+              .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #202124;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    z-index: 1000;
+    margin-top: 0;
+  }
+  
+  .header__item {
+    font-size: 22px;
+    color: #fff;
+    background-color: #3a3a3c;
+    padding: 10px 20px;
+    border-radius: 8px;
+    display: inline-block;
+    text-decoration: none;
+  }
+  
+  .header__item:hover {
+    background-color: #538d4e;
+    cursor: pointer;
+  }
             }
           </style>
         </head>
 <body>
-  <div class="high-scores-container">
+<div class="header__div">
+  <nav class="header">
+    <a class="header__item" href="http://localhost:3000" data-discover="true">Wordle Game</a>
+    <a class="header__item" href="http://localhost:5080/high-scores" rel="noopener noreferrer">High Scores</a>
+    <a class="header__item" href="http://localhost:3000/about" data-discover="true">About</a>
+  </nav>
+</div>
+<div class="high-scores-container">
     <h1>🏆 High Scores</h1>
         <ul>
-      ${winners.map(w => 
-        `<li><strong>${w.name}</strong> — ${new Date(w.date).toLocaleString()} — Time: ${w.timeSpent ? w.timeSpent.toFixed(2) : 'N/A'} seconds</li>`
-      ).join('')}
+      ${winners.map(w =>
+      `<li><strong>${w.name}</strong> — ${new Date(w.date).toLocaleString()} — Time: ${w.timeSpent ? w.timeSpent.toFixed(2) : 'N/A'} seconds</li>`
+    ).join('')}
     </ul>
-    <a href="http://localhost:3000" style="display:inline-block;margin-top:1rem;">⬅️ Back to Game</a>
   </div>
 </body>
       </html>
