@@ -4,21 +4,29 @@ import Grid from "./components/Grid";
 import Keyboard from "./components/Keyboard";
 import Header from "./components/Header";
 import { submitScore } from "./api/gameService";
-
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import About from "./pages/About";
+import './styles/App.css';
 
-import './styles/App.css'
-
-const saveWinner = async (name) => {
+// Save winner data to the server
+const saveWinner = async (name, startTime) => {
   try {
+    const endTime = new Date(); // Set endTime as current time when the game ends
+    const timeSpent = Math.floor((endTime - new Date(startTime)) / 1000); // Calculate time spent in seconds
+
     await fetch("http://localhost:5080/save-winner", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name }),
+      body: JSON.stringify({
+        name,
+        startTime: new Date(startTime),
+        endTime, 
+        timeSpent,
+      }),
     });
+
     console.log("Winner saved!");
   } catch (err) {
     console.error("Failed to save winner:", err);
@@ -32,17 +40,23 @@ const Game = () => {
   const [guesses, setGuesses] = useState([]);
   const [currentGuess, setCurrentGuess] = useState(""); 
   const [letterStatuses, setLetterStatuses] = useState({});
-  const [gameOver, setGameOver] = useState("false");
+  const [gameOver, setGameOver] = useState(false);
   const [winMessage, setWinMessage] = useState("");
   const [gameLost, setGameLost] = useState(false);
   const [onlyUniqueLetters, setOnlyUniqueLetters] = useState(false);
+  const [startTime, setStartTime] = useState(null);
 
-
-  const startGame = (name, length, onlyUnique) => {
+  // Function to start a new game
+  const startGame = async (name, length, onlyUnique) => {
+    const response = await fetch('/start-game', { method: 'POST' });
+    const data = await response.json();
+    const startTime = data.startTime;
+    setStartTime(startTime);
+    
     setPlayerName(name);
     setWordLength(length);
     setOnlyUniqueLetters(onlyUnique);
-    setGameOver (false);
+    setGameOver(false);
     setGameLost(false);
 
     fetch(`http://localhost:5080/random-word?length=${length}&unique=${onlyUnique}`)
@@ -55,6 +69,7 @@ const Game = () => {
     setCurrentGuess(e.target.value.toUpperCase());
   };
 
+  // Function to check the user's guess
   const checkGuess = (guess) => {
     const result = [];
     const correctWordLetters = randomWord.split("");
@@ -90,6 +105,7 @@ const Game = () => {
     return result;
   };
 
+  // Function to handle submission of a guess
   const handleSubmitGuess = (e) => {
     e.preventDefault();
   
@@ -116,10 +132,11 @@ const Game = () => {
       setGameOver(true);
       setWinMessage("Congratulations, you won!");
 
-      saveWinner(playerName);
+      if (startTime) {
+        saveWinner(playerName, startTime);
+      }
     }
   
-
     if (guesses.length === 5) {
       setGameLost(true);
       setGameOver(true);
@@ -130,10 +147,12 @@ const Game = () => {
     setCurrentGuess("");
   };
 
+  // If playerName is not set, show the start screen
   if (!playerName) {
     return <StartScreen onStart={startGame} />;
   }
 
+  // Function to navigate back to the home screen (reset game)
   const handleNavigateHome = () => {
     setPlayerName(null);
     setWordLength(null);
@@ -144,8 +163,10 @@ const Game = () => {
     setGameOver(false);
     setWinMessage("");
     setGameLost(false);
+    setStartTime(null);
   };
 
+  // Function to restart the game
   const restartGame = () => {
     setGameLost(false);
     setGuesses([]);
@@ -153,6 +174,7 @@ const Game = () => {
     setLetterStatuses({});
     setGameOver(false);
     setWinMessage("");
+    setStartTime(null);
   };
 
   return (
@@ -167,22 +189,23 @@ const Game = () => {
       {!gameOver && (
         <form className="guess-form" onSubmit={handleSubmitGuess}>
           <input
-          type="text"
-          value={currentGuess}
-          onChange={handleGuessChange}
-          maxLength={wordLength}
-          placeholder={`Enter a ${wordLength}-letter word`}
+            type="text"
+            value={currentGuess}
+            onChange={handleGuessChange}
+            maxLength={wordLength}
+            placeholder={`Enter a ${wordLength}-letter word`}
           />
           <button type="submit">Submit Guess</button>
         </form>
       )}
       <Grid guesses={guesses} wordLength={wordLength} randomWord={randomWord} />
       <Keyboard letterStatuses={letterStatuses} />
-      { <h1>Random Word: {randomWord || "Loading..."}</h1> }
+      <h1>Random Word: {randomWord || "Loading..."}</h1>
     </div>
   );
-}
+};
 
+// Main App component that includes routing
 function App() {
   return (
     <Router>

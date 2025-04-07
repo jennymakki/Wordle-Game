@@ -4,27 +4,27 @@ import axios from "axios";
 import cors from "cors";
 import dotenv from "dotenv";
 
-import gameRoutes from './routes/gameRoutes.js'
-import winnersRoute from "./routes/winners.js"
+import gameRoutes from "./routes/gameRoutes.js";
+import winnersRoute from "./routes/winners.js";
 import Winner from "./models/Winner.js";
 
-
-dotenv.config()
+dotenv.config();
 
 console.log(process.env.MONGO_URI);
 
 const app = express();
-const PORT = process.env.PORT || 5080;  
+const PORT = process.env.PORT || 5080;
 
 app.use(express.json());
 
 app.use(cors());
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 30000,
-})
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 30000,
+  })
   .then(() => console.log("MongoDB connected"))
   .catch((err) => {
     console.error("Error connecting to MongoDB:", err.message);
@@ -36,13 +36,16 @@ app.listen(PORT, () => {
 
 let wordsList = [];
 
-axios.get("https://raw.githubusercontent.com/dwyl/english-words/master/words_dictionary.json")
-  .then(response => {
+axios
+  .get(
+    "https://raw.githubusercontent.com/dwyl/english-words/master/words_dictionary.json"
+  )
+  .then((response) => {
     wordsList = Object.keys(response.data);
     console.log("First 10 words in list:", wordsList.slice(0, 10));
     console.log("Words loaded successfully!");
   })
-  .catch(error => console.error("Error loading words:", error));
+  .catch((error) => console.error("Error loading words:", error));
 
 // Root endpoint (just for testing in the browser)
 app.get("/", (req, res) => {
@@ -62,38 +65,57 @@ app.get("/random-word", (req, res) => {
   // If a length is provided, filter words by length
   if (length) {
     const wordLength = parseInt(length, 10);
-    filteredWords = wordsList.filter(word => word.length === wordLength);
+    filteredWords = wordsList.filter((word) => word.length === wordLength);
     console.log(`Filtered words with length ${wordLength}:`, filteredWords);
-}
+  }
 
-if (unique === "true") {
-  filteredWords = filteredWords.filter(word => {
-    const letters = word.split('');
-    return new Set(letters).size === letters.length;
-  });
-}
-
+  if (unique === "true") {
+    filteredWords = filteredWords.filter((word) => {
+      const letters = word.split("");
+      return new Set(letters).size === letters.length;
+    });
+  }
 
   // If no words of that length exist, return an error
   if (filteredWords.length === 0) {
-    return res.status(404).json({ error: `No words found with length ${length}` });
+    return res
+      .status(404)
+      .json({ error: `No words found with length ${length}` });
   }
 
   // Pick a random word from the filtered list
-  const randomWord = filteredWords[Math.floor(Math.random() * filteredWords.length)];
+  const randomWord =
+    filteredWords[Math.floor(Math.random() * filteredWords.length)];
   console.log("Random word selected:", randomWord);
   res.json({ word: randomWord });
 });
 
-app.use('/api/game', gameRoutes);
+app.use("/api/game", gameRoutes);
 
 app.use("/api/winners", winnersRoute);
 
-app.post('/save-winner', async (req, res) => {
-  try {
-    const { name } = req.body;
+app.post("/start-game", (req, res) => {
+  const startTime = new Date().toISOString();
+  res.json({ startTime });
+});
 
-    const newWinner = new Winner({ name });
+app.post("/save-winner", async (req, res) => {
+  try {
+    const { name, startTime } = req.body;
+    const endTime = new Date().toISOString();
+
+    const startDate = new Date(startTime);
+    const endDate = new Date(endTime);
+
+    const timeSpent = (endDate - startDate) / 1000;
+
+    const newWinner = new Winner({
+      name,
+      startTime,
+      endTime,
+      timeSpent,
+    });
+
     await newWinner.save();
     console.log("New winner saved:", newWinner);
 
@@ -104,8 +126,7 @@ app.post('/save-winner', async (req, res) => {
   }
 });
 
-
-app.get('/high-scores', async (req, res) => {
+app.get("/high-scores", async (req, res) => {
   try {
     const winners = await Winner.find().sort({ date: -1 }).limit(50); // latest 50 winners
 
@@ -192,21 +213,23 @@ app.get('/high-scores', async (req, res) => {
             }
           </style>
         </head>
-        <body>
-          <div class="high-scores-container">
-            <h1>🏆 High Scores</h1>
-            <ul>
-              ${winners.map(w => `<li><strong>${w.name}</strong> — ${new Date(w.date).toLocaleString()}</li>`).join('')}
-            </ul>
-            <a href="http://localhost:3000" style="display:inline-block;margin-top:1rem;">⬅️ Back to Game</a>
-          </div>
-        </body>
+<body>
+  <div class="high-scores-container">
+    <h1>🏆 High Scores</h1>
+        <ul>
+      ${winners.map(w => 
+        `<li><strong>${w.name}</strong> — ${new Date(w.date).toLocaleString()} — Time: ${w.timeSpent ? w.timeSpent.toFixed(2) : 'N/A'} seconds</li>`
+      ).join('')}
+    </ul>
+    <a href="http://localhost:3000" style="display:inline-block;margin-top:1rem;">⬅️ Back to Game</a>
+  </div>
+</body>
       </html>
     `;
     res.send(html);
   } catch (err) {
-    console.error('Failed to fetch winners', err);
-    res.status(500).send('Something went wrong');
+    console.error("Failed to fetch winners", err);
+    res.status(500).send("Something went wrong");
   }
 });
 
