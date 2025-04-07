@@ -44,6 +44,7 @@
   padding: 10px 20px;
   border-radius: 8px;
   display: inline-block;
+  text-decoration: none;
 }
 
 .header__item:hover {

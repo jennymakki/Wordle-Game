@@ -4,6 +4,10 @@ import Grid from "./components/Grid";
 import Keyboard from "./components/Keyboard";
 import Header from "./components/Header";
 import { submitScore } from "./api/gameService";
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import About from "./pages/About";
+
 import './styles/App.css'
 
 const saveWinner = async (name) => {
@@ -21,7 +25,7 @@ const saveWinner = async (name) => {
   }
 };
 
-function App() {
+const Game = () => {
   const [playerName, setPlayerName] = useState(null);
   const [wordLength, setWordLength] = useState(null);
   const [randomWord, setRandomWord] = useState("");
@@ -174,6 +178,18 @@ function App() {
       <Keyboard letterStatuses={letterStatuses} />
       { <h1>Random Word: {randomWord || "Loading..."}</h1> }
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Header onNavigateHome={() => {}} />
+      <Routes>
+        <Route path="/" element={<Game />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </Router>
   );
 }
 
