@@ -56,7 +56,7 @@ app.get("/random-word", (req, res) => {
   }
 
   // Get word length from query parameters
-  const { length } = req.query;
+  const { length, unique } = req.query;
   let filteredWords = wordsList;
 
   // If a length is provided, filter words by length
