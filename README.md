@@ -8,9 +8,9 @@ GENERELLT:
 
 SIDA 1: SPELET
 () Spelet ska utvecklas fullstack, med GUI utvecklat i React, och delar av spellogiken på backend via ett API.
-() Spelet väljer ut ett slumpmässigt ord varje gång spelet startar – användaren kan bestämma hur många bokstäver ordet ska ha och om det får innehålla bokstäver som upprepas
+(x) Spelet väljer ut ett slumpmässigt ord varje gång spelet startar – användaren kan bestämma hur många bokstäver ordet ska ha och om det får innehålla bokstäver som upprepas
 () Måste dubbelkolla att orden faktiskt är riktiga ord eller om det blir något tokigt när orden hämtas. 
-() GAME OVER om antalet gissningar tar slut
+(x) GAME OVER om antalet gissningar tar slut
 (x) Användaren gissar vad ordet är genom att skriva in det i ett fritextfält
 (x) Spelet ger feedback enligt feedback-algoritmen, genom att visa användarens bokstäver i grönt (correct), gult (misplaced) eller rött (incorrect)
 (x) När användaren gissar rätt ord är spelet över
@@ -33,14 +33,15 @@ Frontend:
 4. Fylla i sin information när spelet är över. 
 
 SIDA 2: OM PROJEKTET (STATISK)
-() STATISK HTML-SIDA OM PROJEKTET
-() GÅ ATT KLICKA IN SIG PÅ 
-() INDIKATOR PÅ ATT MAN ÄR PÅ SIDAN
+(x) STATISK HTML-SIDA OM PROJEKTET
+(x) GÅ ATT KLICKA IN SIG PÅ 
+() SKRIV OM PROJEKTET
 
 SIDA 3: HIGH-SCORE (SSR)
-() På en separat sida/route ska en highscore-lista visas
-() Highscorelistan ska lagras beständigt i en databas.
-() Listan ska server-siderenderas
+(x) På en separat sida/route ska en highscore-lista visas
+(x) Highscorelistan ska lagras beständigt i en databas.
+(x) Listan ska server-siderenderas
+() LÄGG TILL EN TIMER FÖR SPELET
 
 TDD: 
 1. Ta emot informationen som lagrats om spelaren. 

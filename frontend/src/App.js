@@ -35,15 +35,17 @@ const Game = () => {
   const [gameOver, setGameOver] = useState("false");
   const [winMessage, setWinMessage] = useState("");
   const [gameLost, setGameLost] = useState(false);
+  const [onlyUniqueLetters, setOnlyUniqueLetters] = useState(false);
 
 
-  const startGame = (name, length) => {
+  const startGame = (name, length, onlyUnique) => {
     setPlayerName(name);
     setWordLength(length);
+    setOnlyUniqueLetters(onlyUnique);
     setGameOver (false);
     setGameLost(false);
 
-    fetch(`http://localhost:5080/random-word?length=${length}`)
+    fetch(`http://localhost:5080/random-word?length=${length}&unique=${onlyUnique}`)
       .then((response) => response.json())
       .then((data) => setRandomWord(data.word))
       .catch((error) => console.error("Error fetching word:", error));
@@ -62,7 +64,7 @@ const Game = () => {
 
     for (let i = 0; i < guessedLetters.length; i++) {
       if (guessedLetters[i] === correctWordLetters[i]) {
-        result [i] = { letter: guessedLetters [i], status: "correct"};
+        result[i] = { letter: guessedLetters[i], status: "correct"};
         correctLetterCounts[guessedLetters[i]] =
         (correctLetterCounts[guessedLetters[i]] || 0) +1;
       }
@@ -70,7 +72,7 @@ const Game = () => {
 
     for (let i=0; i < guessedLetters.length; i++) {
       if (!result[i]) {
-        const letter = guessedLetters [i];
+        const letter = guessedLetters[i];
         const occurencesInCorrectWord = randomWord.split(letter).length -1;
         const occurencesMarked = correctLetterCounts[letter] || 0;
 
@@ -78,7 +80,7 @@ const Game = () => {
           randomWord.includes(letter) &&
           occurencesMarked < occurencesInCorrectWord
         ) {
-          result [i] = {letter, status: "misplaced" };
+          result[i] = {letter, status: "misplaced" };
           correctLetterCounts[letter] = occurencesMarked +1;
         } else {
           result[i] = {letter, status: "incorrect" };

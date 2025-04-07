@@ -66,6 +66,14 @@ app.get("/random-word", (req, res) => {
     console.log(`Filtered words with length ${wordLength}:`, filteredWords);
 }
 
+if (unique === "true") {
+  filteredWords = filteredWords.filter(word => {
+    const letters = word.split('');
+    return new Set(letters).size === letters.length;
+  });
+}
+
+
   // If no words of that length exist, return an error
   if (filteredWords.length === 0) {
     return res.status(404).json({ error: `No words found with length ${length}` });
