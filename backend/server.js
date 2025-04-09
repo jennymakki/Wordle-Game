@@ -47,22 +47,18 @@ axios
   })
   .catch((error) => console.error("Error loading words:", error));
 
-// Root endpoint (just for testing in the browser)
 app.get("/", (req, res) => {
   res.send("<h1>Wordle Backend is Running</h1>");
 });
 
-// Get a random word with optional length filter
 app.get("/random-word", (req, res) => {
   if (wordsList.length === 0) {
     return res.status(500).json({ error: "Word list not loaded yet" });
   }
 
-  // Get word length from query parameters
   const { length, unique } = req.query;
   let filteredWords = wordsList;
 
-  // If a length is provided, filter words by length
   if (length) {
     const wordLength = parseInt(length, 10);
     filteredWords = wordsList.filter((word) => word.length === wordLength);
@@ -76,14 +72,12 @@ app.get("/random-word", (req, res) => {
     });
   }
 
-  // If no words of that length exist, return an error
   if (filteredWords.length === 0) {
     return res
       .status(404)
       .json({ error: `No words found with length ${length}` });
   }
 
-  // Pick a random word from the filtered list
   const randomWord =
     filteredWords[Math.floor(Math.random() * filteredWords.length)];
   console.log("Random word selected:", randomWord);
@@ -165,14 +159,14 @@ app.get("/high-scores", async (req, res) => {
               max-width: 600px;
               width: 100%;
               text-align: center;
-              margin-top: 3rem;
+              margin-top: 1.5rem;
             }
 
             /* Header styles */
             h1 {
               color: #333;
-              font-size: 2rem;
-              margin-bottom: 1.5rem;
+              font-size: 1.1rem;
+              margin-bottom: 1rem;
             }
 
             /* High Scores List */
@@ -199,54 +193,56 @@ app.get("/high-scores", async (req, res) => {
             /* Link styling */
             a {
               display: inline-block;
-              margin-top: 2rem;
+              margin-top: 0rem;
               padding: 0.8rem 1.5rem;
               background-color: #6aaa64;
               color: white;
               border-radius: 8px;
               text-decoration: none;
-              font-weight: bold;
               transition: background-color 0.3s ease;
             }
 
             a:hover {
               background-color: #5c9b58;
-  }
+            }
 
+  body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
 
               .header__div {
   width: 100%;
-  background-color: #6aaa64; /* match Wordle's green or whatever you use */
   padding: 1rem 0;
-  position: fixed; /* stick to top */
   top: 0;
   left: 0;
-  z-index: 1000; /* stay above other content */
 }
 
               .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #202124;
-    padding: 0.5rem;
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    z-index: 1000;
-    margin-top: 0;
-  }
-  
-  .header__item {
-    font-size: 22px;
-    color: #fff;
-    background-color: #3a3a3c;
-    padding: 10px 20px;
-    border-radius: 8px;
-    display: inline-block;
-    text-decoration: none;
-  }
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #202124;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  z-index: 1000;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  margin-top: 0;
+}
+
+.header__item {
+  font-size: 1.1rem;
+  color: #fff;
+  background-color: #3a3a3c;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
   
   .header__item:hover {
     background-color: #538d4e;
@@ -266,9 +262,16 @@ app.get("/high-scores", async (req, res) => {
 <div class="high-scores-container">
     <h1>🏆 High Scores</h1>
         <ul>
-      ${winners.map(w =>
-      `<li><strong>${w.name}</strong> — ${new Date(w.date).toLocaleString()} — Time: ${w.timeSpent ? w.timeSpent.toFixed(2) : 'N/A'} seconds</li>`
-    ).join('')}
+      ${winners
+        .map(
+          (w) =>
+            `<li><strong>${w.name}</strong> — ${new Date(
+              w.date
+            ).toLocaleString()} — Time: ${
+              w.timeSpent ? w.timeSpent.toFixed(2) : "N/A"
+            } seconds</li>`
+        )
+        .join("")}
     </ul>
   </div>
 </body>

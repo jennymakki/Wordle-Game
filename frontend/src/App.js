@@ -1,18 +1,17 @@
 import { useState } from "react";
 import StartScreen from "./components/StartScreen";
 import Grid from "./components/Grid";
-// import Keyboard from "./components/Keyboard";
 import Header from "./components/Header";
-import { submitScore } from "./api/gameService";
+import { submitScore } from "./api/submitScore";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import About from "./pages/About";
 import './styles/App.css';
 
-// Save winner data to the server
+
 const saveWinner = async (name, startTime) => {
   try {
-    const endTime = new Date(); // Set endTime as current time when the game ends
-    const timeSpent = Math.floor((endTime - new Date(startTime)) / 1000); // Calculate time spent in seconds
+    const endTime = new Date(); 
+    const timeSpent = Math.floor((endTime - new Date(startTime)) / 1000);
 
     await fetch("http://localhost:5080/save-winner", {
       method: "POST",
@@ -45,7 +44,6 @@ const Game = () => {
   const [gameLost, setGameLost] = useState(false);
   const [onlyUniqueLetters, setOnlyUniqueLetters] = useState(false);
   const [startTime, setStartTime] = useState(null);
-
 
   const startGame = async (name, length, onlyUnique) => {
     const response = await fetch('/start-game', { method: 'POST' });
