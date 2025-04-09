@@ -1,7 +1,7 @@
 import { useState } from "react";
 import StartScreen from "./components/StartScreen";
 import Grid from "./components/Grid";
-import Keyboard from "./components/Keyboard";
+// import Keyboard from "./components/Keyboard";
 import Header from "./components/Header";
 import { submitScore } from "./api/gameService";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -46,7 +46,7 @@ const Game = () => {
   const [onlyUniqueLetters, setOnlyUniqueLetters] = useState(false);
   const [startTime, setStartTime] = useState(null);
 
-  // Function to start a new game
+
   const startGame = async (name, length, onlyUnique) => {
     const response = await fetch('/start-game', { method: 'POST' });
     const data = await response.json();
@@ -69,7 +69,6 @@ const Game = () => {
     setCurrentGuess(e.target.value.toUpperCase());
   };
 
-  // Function to check the user's guess
   const checkGuess = (guess) => {
     const result = [];
     const correctWordLetters = randomWord.split("");
@@ -105,7 +104,6 @@ const Game = () => {
     return result;
   };
 
-  // Function to handle submission of a guess
   const handleSubmitGuess = (e) => {
     e.preventDefault();
   
@@ -147,12 +145,10 @@ const Game = () => {
     setCurrentGuess("");
   };
 
-  // If playerName is not set, show the start screen
   if (!playerName) {
     return <StartScreen onStart={startGame} />;
   }
 
-  // Function to navigate back to the home screen (reset game)
   const handleNavigateHome = () => {
     setPlayerName(null);
     setWordLength(null);
@@ -166,7 +162,6 @@ const Game = () => {
     setStartTime(null);
   };
 
-  // Function to restart the game
   const restartGame = () => {
     setGameLost(false);
     setGuesses([]);
@@ -179,7 +174,7 @@ const Game = () => {
 
   return (
     <div className="App">
-      <Header onNavigateHome={handleNavigateHome} />
+
       <h2>Good Luck, {playerName}!</h2>
       {gameOver && (
         <div>
@@ -199,13 +194,11 @@ const Game = () => {
         </form>
       )}
       <Grid guesses={guesses} wordLength={wordLength} randomWord={randomWord} />
-      <Keyboard letterStatuses={letterStatuses} />
       <h1>Random Word: {randomWord || "Loading..."}</h1>
     </div>
   );
 };
 
-// Main App component that includes routing
 function App() {
   return (
     <Router>

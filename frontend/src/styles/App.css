@@ -1,11 +1,13 @@
 #root {
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
-  background: linear-gradient(to right, #dcdcdc, #b0b0b0); 
+  background-color: #202124; 
   display: flex;
   justify-content: center; 
   align-items: center;
   flex-direction: column; 
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
 
@@ -16,35 +18,39 @@
   justify-content: center;
   background-color: #202124;
   width: 100%;
-  height: 100vh;
+  max-width: auto;
+  min-height: 100vh;
   color: white;
   font-family: 'Arial', sans-serif;
   text-align: center;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
 
 .header {
-  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   background-color: #202124;
-  padding: 0.5rem;
+  padding: 2rem;
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 1rem;
   z-index: 1000;
+  flex-wrap: wrap;
+  box-sizing: border-box;
   margin-top: 0;
 }
 
 .header__item {
-  font-size: 22px;
+  font-size: 1.1rem;
   color: #fff;
   background-color: #3a3a3c;
-  padding: 10px 20px;
+  padding: 0.5rem 1rem;
   border-radius: 8px;
-  display: inline-block;
   text-decoration: none;
+  flex-shrink: 0;
 }
 
 .header__item:hover {
@@ -52,18 +58,29 @@
   cursor: pointer;
 }
 
+h2 {
+  margin: 1rem;
+  font-size: 2rem;
+}
+
 h3 {
-  margin: 5px;
-  font-size: 18px;
+  margin: 0.3rem;
+  font-size: 1rem;
 }
 
 .guess-form {
   display: flex;
-  gap: 10px;
+  gap: 0rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1rem;
 }
 
 button {
   height: 2.7rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
 }
 
 .correct {
@@ -79,4 +96,33 @@ button {
 .incorrect {
   background-color: #3a3a3c;
   color: white;
+}
+
+@media (max-width: 600px) {
+  .header {
+    gap: 0.5rem;
+    flex-direction: row;
+    align-items: center;
+    padding-bottom: 0.5rem;
+  }
+
+  .header__item {
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .guess-form {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  h2 {
+    margin-top: 0rem;
+    font-size: 1rem;
+  }
+
 }

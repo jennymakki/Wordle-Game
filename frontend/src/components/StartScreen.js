@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Header from "./Header";
 import "../styles/StartScreen.css";
 
 function StartScreen({ onStart }) {
@@ -17,7 +16,6 @@ function StartScreen({ onStart }) {
 
   return (
     <div className="start-screen">
-      <Header />
       <h2>Enter your name:</h2>
       <input
         type="text"
