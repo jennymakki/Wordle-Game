@@ -8,7 +8,7 @@ import About from "./pages/About";
 import './styles/App.css';
 
 
-const saveWinner = async (name, startTime) => {
+const saveWinner = async (name, startTime, wordLength, onlyUniqueLetters) => {
   try {
     const endTime = new Date(); 
     const timeSpent = Math.floor((endTime - new Date(startTime)) / 1000);
@@ -23,6 +23,8 @@ const saveWinner = async (name, startTime) => {
         startTime: new Date(startTime),
         endTime, 
         timeSpent,
+        wordLength,
+        onlyUniqueLetters,
       }),
     });
 
@@ -129,7 +131,7 @@ const Game = () => {
       setWinMessage("Congratulations, you won!");
 
       if (startTime) {
-        saveWinner(playerName, startTime);
+        saveWinner(playerName, startTime, wordLength, onlyUniqueLetters);
       }
     }
   
@@ -137,7 +139,7 @@ const Game = () => {
       setGameLost(true);
       setGameOver(true);
 
-      submitScore(playerName, guesses.length + 1);
+      submitScore(playerName, guesses.length + 1, wordLength, onlyUniqueLetters);
     }
   
     setCurrentGuess("");
@@ -192,7 +194,6 @@ const Game = () => {
         </form>
       )}
       <Grid guesses={guesses} wordLength={wordLength} randomWord={randomWord} />
-      <h1>Random Word: {randomWord || "Loading..."}</h1>
     </div>
   );
 };

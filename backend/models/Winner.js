@@ -8,7 +8,9 @@ const winnerSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now
-  }
+  },
+  wordLength: { type: Number, required: true },
+  onlyUniqueLetters: {type: Boolean, required: true },
 });
 
 const Winner = mongoose.model("Winner", winnerSchema);

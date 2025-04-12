@@ -95,7 +95,7 @@ app.post("/start-game", (req, res) => {
 
 app.post("/save-winner", async (req, res) => {
   try {
-    const { name, startTime } = req.body;
+    const { name, startTime, wordLength, onlyUniqueLetters } = req.body;
     const endTime = new Date().toISOString();
 
     const startDate = new Date(startTime);
@@ -108,6 +108,8 @@ app.post("/save-winner", async (req, res) => {
       startTime,
       endTime,
       timeSpent,
+      wordLength,
+      onlyUniqueLetters,
     });
 
     await newWinner.save();
@@ -122,7 +124,7 @@ app.post("/save-winner", async (req, res) => {
 
 app.get("/high-scores", async (req, res) => {
   try {
-    const winners = await Winner.find().sort({ date: -1 }).limit(50); // latest 50 winners
+    const winners = await Winner.find().sort({ timeSpent: 1 }).limit(50);
 
     const html = `
        <!DOCTYPE html>
@@ -269,7 +271,9 @@ app.get("/high-scores", async (req, res) => {
               w.date
             ).toLocaleString()} — Time: ${
               w.timeSpent ? w.timeSpent.toFixed(2) : "N/A"
-            } seconds</li>`
+            } seconds — Word Length: ${w.wordLength} — Unique Letters: ${
+              w.onlyUniqueLetters ? "Yes" : "No"
+            }</li>`
         )
         .join("")}
     </ul>
