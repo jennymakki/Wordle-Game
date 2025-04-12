@@ -2,8 +2,7 @@
   min-height: 100vh;
   width: 100vw;
   background-color: #202124; 
-  display: flex;
-  justify-content: center; 
+  display: flex; 
   align-items: center;
   flex-direction: column; 
   padding: 1rem;
@@ -15,7 +14,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   background-color: #202124;
   width: 100%;
   max-width: auto;
@@ -96,6 +94,22 @@ button {
 .incorrect {
   background-color: #3a3a3c;
   color: white;
+}
+
+.save-prompt {
+  margin: 1rem;
+  display: flex;
+  gap: 1rem; 
+  justify-content: center; 
+  flex-direction: column;
+}
+
+button.No-save_button {
+  background: rgb(167, 27, 27);
+}
+
+button.No-save_button:hover {
+  background: rgb(129, 22, 22)
 }
 
 @media (max-width: 600px) {

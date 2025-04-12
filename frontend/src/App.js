@@ -46,6 +46,18 @@ const Game = () => {
   const [gameLost, setGameLost] = useState(false);
   const [onlyUniqueLetters, setOnlyUniqueLetters] = useState(false);
   const [startTime, setStartTime] = useState(null);
+  const [showSavePrompt, setShowSavePrompt] = useState(false);
+
+  const handleSaveWinner = () => {
+    if (startTime) {
+      saveWinner(playerName, startTime, wordLength, onlyUniqueLetters);
+    }
+    setShowSavePrompt(false); 
+  };
+
+  const handleCancelSave = () => {
+    setShowSavePrompt(false);
+  };
 
   const startGame = async (name, length, onlyUnique) => {
     const response = await fetch('/start-game', { method: 'POST' });
@@ -129,10 +141,7 @@ const Game = () => {
     if (guessLower === randomWord) {
       setGameOver(true);
       setWinMessage("Congratulations, you won!");
-
-      if (startTime) {
-        saveWinner(playerName, startTime, wordLength, onlyUniqueLetters);
-      }
+      setShowSavePrompt(true);
     }
   
     if (guesses.length === 5) {
@@ -178,7 +187,16 @@ const Game = () => {
       <h2>Good Luck, {playerName}!</h2>
       {gameOver && (
         <div>
-          <h2>{winMessage || "You lost, better luck next time!"}</h2>
+          <h2>{winMessage || `You lost! The word was: ${randomWord}`}</h2>
+          {showSavePrompt && (
+            <div className="save-prompt">
+              <p>Would you like to save your win to the high scores?</p>
+              <div className="save_buttons">
+              <button className="Save_button" onClick={handleSaveWinner}>Yes, Save</button>
+              <button className="No-save_button" onClick={handleCancelSave}>No, Thanks</button>
+              </div>
+            </div>
+          )}
         </div>
       )}
       {!gameOver && (
