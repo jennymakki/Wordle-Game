@@ -21,7 +21,7 @@ const Game = () => {
     try {
       const endTime = new Date();
       const timeSpent = Math.floor((endTime - new Date(startTime)) / 1000);
-      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5080";
+      const API_URL = process.env.REACT_APP_API_URL;
 
       await fetch(`${API_URL}/save-winner`, {
         method: "POST",
@@ -54,7 +54,7 @@ const Game = () => {
   };
 
   const startGame = async (name, length, onlyUnique) => {
-    const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5080";
+    const API_URL = process.env.REACT_APP_API_URL;
     const response = await fetch(`${API_URL}/start-game`, { method: "POST" });
     const data = await response.json();
     setStartTime(data.startTime);

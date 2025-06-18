@@ -6,7 +6,7 @@ function Header({ onNavigateHome }) {
   <Link className="header__item" to="/" onClick={onNavigateHome}>
     Wordle Game
   </Link>
-      <a className="header__item" href="http://localhost:5080/high-scores" rel="noopener noreferrer">
+      <a className="header__item" href="https://wordle-game-duu9.onrender.com/" rel="noopener noreferrer">
         High Scores
       </a>
       <Link className="header__item" to="/about">
