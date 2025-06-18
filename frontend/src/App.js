@@ -4,7 +4,7 @@ import Game from "./components/Game";
 import About from "./pages/About";
 import "./styles/App.css";
 import HighScoresRedirect from "./components/HighScoresRedirect";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
