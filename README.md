@@ -13,7 +13,6 @@ A custom Wordle game built with **React**, **Express**, and **MongoDB**.
 ## **Deploy:**
 
 https://wordle-game-duu9.onrender.com/
----
 
 ## **Installation Instructions**
 
