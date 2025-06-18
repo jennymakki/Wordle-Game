@@ -38,10 +38,6 @@ mongoose
     console.error("Error connecting to MongoDB:", err.message);
   });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
-
 let wordsList = [];
 
 axios
@@ -54,10 +50,6 @@ axios
     console.log("Words loaded successfully!");
   })
   .catch((error) => console.error("Error loading words:", error));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
 
 app.get("/", (req, res) => {
   res.send("<h1>Wordle Backend is Running</h1>");
@@ -299,5 +291,15 @@ app.get("/high-scores", async (req, res) => {
     res.status(500).send("Something went wrong");
   }
 });
+
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
+
 
 export default app;
