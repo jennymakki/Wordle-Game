@@ -1,8 +1,10 @@
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5080";
+
 const submitScore = async (playerName, score) => {
   try {
-    const response = await axios.post('http://localhost:5080/api/game/submit-score', {
+    const response = await axios.post(`${API_URL}/api/game/submit-score`, {
       playerName,
       score,
     });

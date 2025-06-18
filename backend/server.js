@@ -3,6 +3,8 @@ import express from "express";
 import axios from "axios";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
 import gameRoutes from "./routes/gameRoutes.js";
 import winnersRoute from "./routes/winners.js";
@@ -14,6 +16,12 @@ console.log(process.env.MONGO_URI);
 
 const app = express();
 const PORT = process.env.PORT || 5080;
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5080";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(express.static(path.join(__dirname, "build")));
 
 app.use(express.json());
 
@@ -46,6 +54,10 @@ axios
     console.log("Words loaded successfully!");
   })
   .catch((error) => console.error("Error loading words:", error));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 app.get("/", (req, res) => {
   res.send("<h1>Wordle Backend is Running</h1>");
@@ -256,9 +268,9 @@ app.get("/high-scores", async (req, res) => {
 <body>
 <div class="header__div">
   <nav class="header">
-    <a class="header__item" href="http://localhost:3000" data-discover="true">Wordle Game</a>
-    <a class="header__item" href="http://localhost:5080/high-scores" rel="noopener noreferrer">High Scores</a>
-    <a class="header__item" href="http://localhost:3000/about" data-discover="true">About</a>
+          <a class="header__item" href="${FRONTEND_URL}" data-discover="true">Jennys Wordle Game</a>
+          <a class="header__item" href="${BACKEND_URL}/high-scores" rel="noopener noreferrer">High Scores</a>
+          <a class="header__item" href="${FRONTEND_URL}/about" data-discover="true">About</a>
   </nav>
 </div>
 <div class="high-scores-container">
