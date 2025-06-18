@@ -1,9 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Game from "./components/Game";
 import About from "./pages/About";
 import "./styles/App.css";
+import HighScoresRedirect from "./components/HighScoresRedirect";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Game />} /> { }
+        <Route path="/high-scores" element={<HighScoresRedirect />} />
         <Route path="/about" element={<About />} />
       </Routes>
     </Router>

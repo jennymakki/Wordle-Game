@@ -6,9 +6,9 @@ function Header({ onNavigateHome }) {
   <Link className="header__item" to="/" onClick={onNavigateHome}>
     Wordle Game
   </Link>
-      <a className="header__item" href="https://wordle-game-duu9.onrender.com/" rel="noopener noreferrer">
+  <Link className="header__item" to="/high-scores">
         High Scores
-      </a>
+      </Link>
       <Link className="header__item" to="/about">
         About
       </Link>

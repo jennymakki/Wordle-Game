@@ -1,17 +1,18 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "../styles/StartScreen.css";
 
 function StartScreen({ onStart }) {
-  const [name, setName] = useState("");
+  const [playerName, setPlayerName] = useState("");
   const [wordLength, setWordLength] = useState(5);
   const [onlyUniqueLetters, setOnlyUniqueLetters] = useState(false);
 
   const handleStart = () => {
-    if (!name.trim()) {
+    console.log("Start button clicked");
+    if (!playerName.trim()) {
       alert("Enter your name, please!");
       return;
     }
-    onStart(name, wordLength, onlyUniqueLetters);
+    onStart(playerName, wordLength, onlyUniqueLetters);
   };
 
   return (
@@ -19,8 +20,8 @@ function StartScreen({ onStart }) {
       <h2>Enter your name:</h2>
       <input
         type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        value={playerName}
+        onChange={(e) => setPlayerName(e.target.value)}
         placeholder="Your Name"
       />
       <label className="toggle-switch">

@@ -21,7 +21,7 @@ const Game = () => {
     try {
       const endTime = new Date();
       const timeSpent = Math.floor((endTime - new Date(startTime)) / 1000);
-      const API_URL = process.env.REACT_APP_API_URL;
+      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5080";
 
       await fetch(`${API_URL}/save-winner`, {
         method: "POST",
@@ -54,7 +54,7 @@ const Game = () => {
   };
 
   const startGame = async (name, length, onlyUnique) => {
-    const API_URL = process.env.REACT_APP_API_URL;
+    const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5080";
     const response = await fetch(`${API_URL}/start-game`, { method: "POST" });
     const data = await response.json();
     setStartTime(data.startTime);
@@ -119,16 +119,12 @@ const Game = () => {
     const newGuesses = [...guesses, guessLower];
     setGuesses(newGuesses);
   
-    if (guessLower === randomWord.toLowerCase()) {
-      setWinMessage("Congratulations! You won!");
+    if (guessLower === randomWord) {
+      setWinMessage("🎉 You guessed it!");
       setGameOver(true);
       setShowSavePrompt(true);
-      submitScore(playerName, newGuesses.length, wordLength, onlyUniqueLetters);
-      setCurrentGuess("");
-      return;
-    }
-  
-    if (newGuesses.length === 6) {
+      // Optionally call submitScore or saveWinner here
+    } else if (newGuesses.length === 6) {
       setGameLost(true);
       setGameOver(true);
       submitScore(playerName, newGuesses.length, wordLength, onlyUniqueLetters);
@@ -165,16 +161,23 @@ const Game = () => {
   };
 
   return (
-    <div>
+    <div style={{ textAlign: "center", marginTop: "2rem" }}>
       <h2>Good Luck, {playerName}!</h2>
-
+  
       {gameOver && (
-        <div>
+        <div style={{ textAlign: "center", marginTop: "2rem" }}>
           <h2>{winMessage || `You lost! The word was: ${randomWord}`}</h2>
+          
+          {gameLost && (
+            <button onClick={handleNavigateHome} style={{ marginTop: "1rem", marginBottom: "2rem", padding: "0.5rem 1rem", fontSize: "1rem" }}>
+              Try Again
+            </button>
+          )}
+  
           {showSavePrompt && (
-            <div className="save-prompt">
+            <div className="save-prompt" style={{ marginTop: "1rem" }}>
               <p>Would you like to save your win to the high scores?</p>
-              <div className="save_buttons">
+              <div className="save_buttons" style={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
                 <button className="Save_button" onClick={handleSaveWinner}>
                   Yes, Save
                 </button>
@@ -186,22 +189,27 @@ const Game = () => {
           )}
         </div>
       )}
-
+  
       {!gameOver && (
-        <form className="guess-form" onSubmit={handleSubmitGuess}>
+        <form className="guess-form" onSubmit={handleSubmitGuess} style={{ textAlign: "center", marginTop: "2rem" }}>
           <input
             type="text"
             value={currentGuess}
             onChange={handleGuessChange}
             maxLength={wordLength}
             placeholder={`Enter a ${wordLength}-letter word`}
+            style={{ fontSize: "1.2rem", padding: "0.5rem", width: "200px" }}
           />
-          <button type="submit" disabled={currentGuess.length !== wordLength}>
+          <button
+            type="submit"
+            disabled={currentGuess.length !== wordLength}
+            style={{ marginLeft: "1rem", padding: "0.5rem 1rem", fontSize: "1rem" }}
+          >
             Submit Guess
           </button>
         </form>
       )}
-
+  
       <Grid guesses={guesses} wordLength={wordLength} randomWord={randomWord} />
     </div>
   );
