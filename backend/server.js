@@ -21,8 +21,6 @@ const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5080";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(express.static(path.join(__dirname, "build")));
-
 app.use(express.json());
 
 app.use(cors());
@@ -260,7 +258,7 @@ app.get("/high-scores", async (req, res) => {
 <body>
 <div class="header__div">
   <nav class="header">
-          <a class="header__item" href="${FRONTEND_URL}" data-discover="true">Jennys Wordle Game</a>
+          <a class="header__item" href="${FRONTEND_URL}" data-discover="true">Wordle Game</a>
           <a class="header__item" href="${BACKEND_URL}/high-scores" rel="noopener noreferrer">High Scores</a>
           <a class="header__item" href="${FRONTEND_URL}/about" data-discover="true">About</a>
   </nav>
@@ -292,14 +290,14 @@ app.get("/high-scores", async (req, res) => {
   }
 });
 
+app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 });
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
-
 
 export default app;
