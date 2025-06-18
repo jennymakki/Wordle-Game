@@ -258,9 +258,9 @@ app.get("/high-scores", async (req, res) => {
 <body>
 <div class="header__div">
   <nav class="header">
-          <a class="header__item" href="${FRONTEND_URL}" data-discover="true">Wordle Game</a>
-          <a class="header__item" href="${BACKEND_URL}/high-scores" rel="noopener noreferrer">High Scores</a>
-          <a class="header__item" href="${FRONTEND_URL}/about" data-discover="true">About</a>
+      <a class="header__item" href="/">Wordle Game</a>
+      <a class="header__item" href="/high-scores" rel="noopener noreferrer">High Scores</a>
+      <a class="header__item" href="/about">About</a>
   </nav>
 </div>
 <div class="high-scores-container">
