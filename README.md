@@ -45,7 +45,7 @@ Make sure your MongoDB server is running. If you're using a local instance, ensu
 
 ### **Step 5: Start the Application**
 ```bash
-cd Wordle-Game
+cd ..
 npm start
 ```
 

@@ -7,7 +7,7 @@
   },
   "scripts": {
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "node backend/server.js",
     "server": "node backend/server.js",
     "client": "npm start --prefix frontend"
   },
