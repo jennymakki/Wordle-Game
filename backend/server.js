@@ -49,9 +49,9 @@ axios
   })
   .catch((error) => console.error("Error loading words:", error));
 
-app.get("/", (req, res) => {
+/* app.get("/", (req, res) => {
   res.send("<h1>Wordle Backend is Running</h1>");
-});
+}); */
 
 app.get("/random-word", (req, res) => {
   if (wordsList.length === 0) {
