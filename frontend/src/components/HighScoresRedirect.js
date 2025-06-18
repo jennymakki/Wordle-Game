@@ -5,7 +5,7 @@ function HighScoresRedirect() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    window.location.href = "http://localhost:5080/high-scores"; // or deployed backend URL
+    window.location.href = "/high-scores";
   }, []);
 
   return null;
